@@ -559,8 +559,9 @@ class LibUSBContext(object):
             raise libusb1.USBError, result
 
     def handleEventsTimeout(self, tv=None):
-        assert tv is None, 'tv parameter is not supported yet'
-        tv = libusb1.timeval(0, 0)
+        if not isinstance(tv ,libusb1.timeval):
+            assert tv is None, 'tv parameter is not supported yet'
+            tv = libusb1.timeval(0, 0)
         result = libusb1.libusb_handle_events_timeout(self.context_p, byref(tv))
         if result:
             raise libusb1.USBError, result
